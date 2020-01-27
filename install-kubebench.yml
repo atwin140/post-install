@@ -1,0 +1,48 @@
+---
+- hosts: all
+
+
+  vars:
+    gather_facts: true
+    ansible_user: ec2-user
+    ansible_become_user: root
+    ansible_become_method: sudo
+    ansible_become: true
+    installs: 1
+    outpath: "/home/ec2-user/kube-bench/out-{{ ansible_date_time.date }}"
+    outfile: "{{ outpath }}/kube-bench-{{ ansible_hostname }}.out"
+
+  tasks:
+   - name: Copy install and def files
+     copy: src=/home/ec2-user/kube-bench dest=/home/ec2-user/
+     when: installs == 1
+
+   - name: Copy config files
+     copy: src=/home/ec2-user/kube-bench/cfg dest=/home/ec2-user/
+     when: installs == 1
+
+   - name: Install Kube-bench
+     yum:
+       pkg: kube-bench_0.2.3_linux_amd64.rpm
+       state: installed
+     when: installs == 1
+
+   - name: "Ansible | List all known variables and facts"
+     debug:
+       var: hostvars[inventory_hostname]
+     when: installs == 10
+
+   - name: Create Dir for output
+     file: path={{ outpath }} state=directory mode=0700 owner=ec2-user
+
+   - name: Run Kube-bench master
+     shell: /usr/local/bin/kube-bench master --benchmark rh-0.7 > {{ outfile}}
+     when: "'masters' in group_names"
+
+   - name: Run Kube-bench compute
+     shell: /usr/local/bin/kube-bench node --benchmark rh-0.7 > {{ outfile}}
+     # when: "'compute' in group_names"
+     when: "'masters' not in group_names"
+     
+   - name: Fetch output from node
+     fetch: src={{ outfile}} dest={{ outfile}} flat=yes
