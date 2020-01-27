@@ -14,18 +14,18 @@
 
   tasks:
    - name: Copy install and def files
-     copy: src=kube-bench dest=/home/ec2-user/
-     when: installs == 1
+     copy: src=/home/ec2-user/kube-bench dest=/home/ec2-user/
+     when: installs == 1 
 
    - name: Copy config files
-     copy: src=kube-bench/cfg dest=/home/ec2-user/
-     when: installs == 1
+     copy: src=/home/ec2-user/kube-bench/cfg dest=/home/ec2-user/
+     when: installs == 1 
 
    - name: Install Kube-bench
-     yum:
-       pkg: https://github.com/aquasecurity/kube-bench/releases/download/v0.2.3/kube-bench_0.2.3_linux_amd64.rpm
+     yum: 
+       pkg: /home/ec2-user/kube-bench/kube-bench_0.1.0_linux_amd64.rpm
        state: installed
-     when: installs == 1
+     when: installs == 1 
 
    - name: "Ansible | List all known variables and facts"
      debug:
@@ -43,6 +43,10 @@
      shell: /usr/local/bin/kube-bench node --benchmark rh-0.7 > {{ outfile}}
      # when: "'compute' in group_names"
      when: "'masters' not in group_names"
-     
+
    - name: Fetch output from node
      fetch: src={{ outfile}} dest={{ outfile}} flat=yes
+
+
+
+
