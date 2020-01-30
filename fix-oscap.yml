@@ -11,7 +11,12 @@
     outpath: "/home/ec2-user/openscap/out-{{ ansible_date_time.date }}"
     outfile: "{{ outpath }}/openscap-{{ ansible_hostname }}.html"
 
-  tasks:
+    roles:
+    - role: oscap-audisp
+    
+    
+    
+    tasks:
   #  - name: Fix NTP
   #  // need to get NTP server address
 
@@ -22,5 +27,3 @@
         line: "active = yes"
         state: present
 
-  roles:
-    - role: oscap-audisp
