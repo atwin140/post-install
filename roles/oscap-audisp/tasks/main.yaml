@@ -6,7 +6,7 @@
     state: present
 
 - name: Restart auditd
-    systemd:
-    state: restarted
-    daemon_reload: yes
-    name: auditd
+  systemd:
+  state: restarted
+  daemon_reload: yes
+  name: auditd
