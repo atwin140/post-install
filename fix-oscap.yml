@@ -11,8 +11,8 @@
     outpath: "/home/ec2-user/openscap/out-{{ ansible_date_time.date }}"
     outfile: "{{ outpath }}/openscap-{{ ansible_hostname }}.html"
 
-    roles:
-    - role: oscap-audisp
+  roles:
+  - role: oscap-audisp
     
     
   #   tasks:
