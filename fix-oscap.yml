@@ -21,3 +21,6 @@
         regexp: "^active"
         line: "active = yes"
         state: present
+
+  roles:
+    - role: oscap-audisp
