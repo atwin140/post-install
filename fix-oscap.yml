@@ -1,0 +1,23 @@
+- hosts: all
+
+
+  vars:
+    gather_facts: true
+    ansible_user: ec2-user
+    ansible_become_user: root
+    ansible_become_method: sudo
+    ansible_become: true
+    installs: 1
+    outpath: "/home/ec2-user/openscap/out-{{ ansible_date_time.date }}"
+    outfile: "{{ outpath }}/openscap-{{ ansible_hostname }}.html"
+
+  tasks:
+  #  - name: Fix NTP
+  #  // need to get NTP server address
+
+    - name: Fix audispd to active
+      lineinfile:
+        path: /etc/audisp/plugins.d/syslog.conf
+        regexp: "^active"
+        line: "active = yes"
+        state: present
