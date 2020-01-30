@@ -11,19 +11,18 @@
     outpath: "/home/ec2-user/openscap/out-{{ ansible_date_time.date }}"
     outfile: "{{ outpath }}/openscap-{{ ansible_hostname }}.html"
 
-  roles:
-  - role: oscap-audisp
-  
-  
-  
-  tasks:
-#  - name: Fix NTP
-#  // need to get NTP server address
+    roles:
+    - role: oscap-audisp
+    
+    
+  #   tasks:
+  # #  - name: Fix NTP
+  # #  // need to get NTP server address
 
-  - name: Fix audispd to active
-    lineinfile:
-      path: /etc/audisp/plugins.d/syslog.conf
-      regexp: "^active"
-      line: "active = yes"
-      state: present
+  #   - name: Fix audispd to active
+  #     lineinfile:
+  #       path: /etc/audisp/plugins.d/syslog.conf
+  #       regexp: "^active"
+  #       line: "active = yes"
+  #       state: present
 
